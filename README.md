@@ -25,12 +25,12 @@ pip install svglib reportlab
 
 ![](./imgs/2.png)
 
-3. Use this script to convert SVGs to PDFs.
+3. Use this script to convert SVGs to PDFs. Please modify the input and output paths in the script.
 ```
 python svg2pdf.py
 ```
 
-4. Using PDFs as figure in LaTex.
+4. Using PDFs as figure in LaTeX.
 ```
 \begin{figure}[htbp] 
     \centering
