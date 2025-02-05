@@ -1,34 +1,30 @@
 # Description: This script converts all SVG files in a directory to PDF files.
-# Reference: https://stackoverflow.com/a/5835909
 
 import os
-from svglib.svglib import svg2rlg
-from reportlab.graphics import renderPDF
+import cairosvg
 
-def convert_svgs_to_pdfs(input_folder, output_folder):
-    
-    # create the output folder if it doesn't exist
-    if not os.path.exists(output_folder):
-        os.makedirs(output_folder)
-    
-    # iterate over all files in the input folder
-    for filename in os.listdir(input_folder):
-        if filename.endswith(".svg"):
+def convert_svgs_to_pdfs(source_dir, output_dir):
+    # Make sure the output directory exists
+    os.makedirs(output_dir, exist_ok=True)
+
+    # Iterate through all files in the source directory
+    for filename in os.listdir(source_dir):
+        if filename.lower().endswith(".svg"):
+            svg_path = os.path.join(source_dir, filename)
             
-            svg_path = os.path.join(input_folder, filename)
-            pdf_filename = f"{os.path.splitext(filename)[0]}.pdf"
-            pdf_path = os.path.join(output_folder, pdf_filename)
+            base_name = os.path.splitext(filename)[0]
+            pdf_filename = f"{base_name}.pdf"
+            pdf_path = os.path.join(output_dir, pdf_filename)
 
-            # convert SVG to PDF
-            drawing = svg2rlg(svg_path)
+            try:
+                # Convert
+                cairosvg.svg2pdf(url=svg_path, write_to=pdf_path)
+                print(f"[OK]：{filename} -> {pdf_path}")
+            except Exception as e:
+                print(f"[ERR] {filename}: {str(e)}")
 
-            # save the PDF
-            renderPDF.drawToFile(drawing, pdf_path)
-            print(f"Conversion complete: {svg_path} -> {pdf_path}")
+if __name__ == "__main__":
+    SOURCE_DIRECTORY = "./"  # Source folder path
+    OUTPUT_DIRECTORY = "./pdfss"  # Destination folder path
 
-# specify the input and output folders
-input_folder = './'
-output_folder = './pdfs'
-
-
-convert_svgs_to_pdfs(input_folder, output_folder)
+    convert_svgs_to_pdfs(SOURCE_DIRECTORY, OUTPUT_DIRECTORY)

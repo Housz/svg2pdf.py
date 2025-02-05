@@ -11,7 +11,7 @@ Reference: https://stackoverflow.com/a/5835909
 
 Dependencies:
 ```
-pip install svglib reportlab
+pip install cairosvg
 ```
 
 
